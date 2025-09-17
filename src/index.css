@@ -1,0 +1,197 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Restaurant Design System - Elegant & Sophisticated */
+
+@layer base {
+  :root {
+    /* Base Colors - Warm & Elegant */
+    --background: 40 20% 97%;
+    --foreground: 20 10% 15%;
+
+    /* Card & Surface Colors */
+    --card: 40 25% 99%;
+    --card-foreground: 20 10% 15%;
+
+    --popover: 40 25% 99%;
+    --popover-foreground: 20 10% 15%;
+
+    /* Primary - Rich Burgundy */
+    --primary: 358 65% 35%;
+    --primary-foreground: 40 25% 99%;
+    --primary-light: 358 55% 45%;
+    --primary-dark: 358 75% 25%;
+
+    /* Secondary - Warm Gold */
+    --secondary: 45 80% 65%;
+    --secondary-foreground: 20 10% 15%;
+
+    /* Muted - Warm Neutral */
+    --muted: 35 15% 92%;
+    --muted-foreground: 20 8% 45%;
+
+    /* Accent - Sage Green */
+    --accent: 120 20% 60%;
+    --accent-foreground: 20 10% 15%;
+
+    /* Utility Colors */
+    --destructive: 0 75% 55%;
+    --destructive-foreground: 40 25% 99%;
+
+    --border: 35 15% 88%;
+    --input: 35 15% 88%;
+    --ring: 358 65% 35%;
+
+    /* Design Tokens */
+    --radius: 0.75rem;
+
+    /* Restaurant Specific */
+    --warm-cream: 40 30% 95%;
+    --rich-charcoal: 20 15% 20%;
+    --elegant-gold: 45 85% 70%;
+    --deep-wine: 358 70% 30%;
+    
+    /* Gradients */
+    --gradient-hero: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary-dark)) 100%);
+    --gradient-overlay: linear-gradient(180deg, transparent 0%, hsla(var(--primary), 0.8) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(var(--card)) 0%, hsl(var(--warm-cream)) 100%);
+    
+    /* Shadows */
+    --shadow-elegant: 0 10px 40px -10px hsla(var(--primary), 0.3);
+    --shadow-soft: 0 4px 20px -5px hsla(var(--foreground), 0.1);
+    --shadow-gallery: 0 20px 60px -10px hsla(var(--primary), 0.4);
+
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans;
+  }
+}
+
+@layer components {
+  /* Gallery Animations */
+  .gallery-fade {
+    @apply transition-all duration-500 ease-in-out;
+  }
+  
+  .gallery-fade.active {
+    @apply opacity-100 scale-100;
+  }
+  
+  .gallery-fade:not(.active) {
+    @apply opacity-0 scale-105;
+  }
+
+  /* Menu Item Hover Effects */
+  .menu-item {
+    @apply transition-all duration-300 ease-out hover:shadow-soft hover:-translate-y-1;
+  }
+
+  /* Cart Animation */
+  .cart-bounce {
+    @apply animate-bounce;
+  }
+
+  /* Filter Toggle */
+  .filter-toggle {
+    @apply relative overflow-hidden transition-all duration-300;
+  }
+
+  .filter-toggle::before {
+    @apply content-[''] absolute inset-0 bg-gradient-to-r from-primary to-primary-light opacity-0 transition-opacity duration-300;
+  }
+
+  .filter-toggle.active::before {
+    @apply opacity-100;
+  }
+
+  /* Elegant Shadows */
+  .shadow-elegant {
+    box-shadow: var(--shadow-elegant);
+  }
+
+  .shadow-soft {
+    box-shadow: var(--shadow-soft);
+  }
+
+  .shadow-gallery {
+    box-shadow: var(--shadow-gallery);
+  }
+
+  /* Gradient Backgrounds */
+  .bg-gradient-hero {
+    background: var(--gradient-hero);
+  }
+
+  .bg-gradient-overlay {
+    background: var(--gradient-overlay);
+  }
+
+  .bg-gradient-card {
+    background: var(--gradient-card);
+  }
+}
