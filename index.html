@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elegante Restaurant | Scan, Browse, Order</title>
+    <meta name="description" content="Experience fine dining with our digital menu. Scan the QR code to browse our exquisite dishes and place your order seamlessly.">
+    <meta name="author" content="Elegante Restaurant">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="tableModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Select Your Table</h2>
+                <button class="close-btn" onclick="closeTableModal()">&times;</button>
+            </div>
+            <div class="table-grid">
+            </div>
+            <button class="btn btn-elegant" onclick="confirmTable()">Confirm Table</button>
+        </div>
+    </div>
+
+    <div class="language-selector">
+        <button class="lang-btn" onclick="changeLanguage('en')">EN</button>
+        <button class="lang-btn" onclick="changeLanguage('es')">ES</button>
+        <button class="lang-btn" onclick="changeLanguage('fr')">FR</button>
+    </div>
+
+    <button class="theme-toggle" onclick="toggleTheme()">
+        <i data-lucide="sun" class="theme-icon"></i>
+    </button>
+
+    <section id="hero" class="hero-section">
+        <div class="gallery-container">
+            <div class="gallery-images">
+            </div>
+            <div class="gallery-overlay">
+                <div class="hero-content">
+                    <h1 class="hero-title" data-translate="restaurant-name">Elegante</h1>
+                    <p class="hero-subtitle" data-translate="tagline">Fine Dining Experience</p>
+                    <p class="hero-description" data-translate="scan-browse-order">Scan • Browse • Order</p>
+                    <div class="table-info" id="tableInfo" style="display: none;">
+                        <p data-translate="table">Table: <span id="selectedTable"></span></p>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="gallery-nav prev" onclick="previousSlide()">
+                <i data-lucide="chevron-left"></i>
+            </button>
+            <button class="gallery-nav next" onclick="nextSlide()">
+                <i data-lucide="chevron-right"></i>
+            </button>
+            
+            <div class="gallery-dots"></div>
+            
+            <div class="scroll-indicator">
+                <div class="scroll-dot"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="offers-section">
+        <div class="container">
+            <h2 class="section-title" data-translate="special-offers">Today's Special Offers</h2>
+            <div class="offers-grid" id="offersGrid">
+            </div>
+        </div>
+    </section>
+
+    <section class="search-section">
+        <div class="container">
+            <div class="search-controls">
+                <div class="search-box">
+                    <i data-lucide="search"></i>
+                    <input type="text" id="searchInput" placeholder="Search dishes..." data-translate-placeholder="search-dishes">
+                </div>
+                
+                <div class="filter-tabs">
+                    <button class="filter-tab active" data-filter="all" data-translate="all">All</button>
+                    <button class="filter-tab" data-filter="veg" data-translate="vegetarian">Vegetarian</button>
+                    <button class="filter-tab" data-filter="non-veg" data-translate="non-vegetarian">Non-Vegetarian</button>
+                    <button class="filter-tab" data-filter="favorites" data-translate="favorites">Favorites</button>
+                </div>
+                
+                <div class="category-tabs">
+                    <button class="category-tab active" data-category="all" data-translate="all">All</button>
+                    <button class="category-tab" data-category="appetizer" data-translate="appetizers">Appetizers</button>
+                    <button class="category-tab" data-category="main" data-translate="main-courses">Main Courses</button>
+                    <button class="category-tab" data-category="dessert" data-translate="desserts">Desserts</button>
+                    <button class="category-tab" data-category="beverage" data-translate="beverages">Beverages</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="menu-section">
+        <div class="container">
+            <h2 class="section-title" data-translate="our-menu">Our Menu</h2>
+            <p class="section-description" data-translate="menu-description">
+                Discover our carefully crafted dishes made with the finest ingredients
+            </p>
+            
+            <div class="menu-grid" id="menuGrid">
+            </div>
+            
+            <div class="no-results" id="noResults" style="display: none;">
+                <i data-lucide="search-x"></i>
+                <p data-translate="no-items-found">No items found matching your criteria.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="floating-cart" id="floatingCart" onclick="toggleCart()">
+        <div class="cart-icon">
+            <i data-lucide="shopping-cart"></i>
+            <span class="cart-badge" id="cartBadge">0</span>
+        </div>
+        <span class="cart-total" id="cartTotal">$0.00</span>
+    </div>
+
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3 data-translate="your-order">Your Order</h3>
+            <button class="close-cart" onclick="toggleCart()">
+                <i data-lucide="x"></i>
+            </button>
+        </div>
+        
+        <div class="cart-content">
+            <div class="cart-items" id="cartItems">
+            </div>
+            
+            <div class="cart-empty" id="cartEmpty">
+                <i data-lucide="shopping-cart"></i>
+                <h4 data-translate="cart-empty">Your cart is empty</h4>
+                <p data-translate="cart-empty-desc">Add some delicious items to get started!</p>
+            </div>
+        </div>
+        
+        <div class="cart-footer" id="cartFooter">
+            <div class="order-summary">
+                <div class="summary-row">
+                    <span data-translate="subtotal">Subtotal:</span>
+                    <span id="subtotal">$0.00</span>
+                </div>
+                <div class="summary-row">
+                    <span data-translate="tax">Tax (10%):</span>
+                    <span id="taxAmount">$0.00</span>
+                </div>
+                <div class="summary-row total">
+                    <span data-translate="total">Total:</span>
+                    <span id="finalTotal">$0.00</span>
+                </div>
+            </div>
+            
+            <div class="cart-actions">
+                <button class="btn btn-elegant btn-full" onclick="checkout()" data-translate="place-order">
+                    Place Order • $0.00
+                </button>
+                <button class="btn btn-outline btn-full" onclick="clearCart()" data-translate="clear-cart">
+                    Clear Cart
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="orderModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 data-translate="order-status">Order Status</h2>
+                <button class="close-btn" onclick="closeOrderModal()">&times;</button>
+            </div>
+            <div class="order-tracking">
+                <div class="tracking-step completed">
+                    <div class="step-icon"><i data-lucide="check"></i></div>
+                    <div class="step-content">
+                        <h4 data-translate="order-received">Order Received</h4>
+                        <p data-translate="order-confirmed">Your order has been confirmed</p>
+                    </div>
+                </div>
+                <div class="tracking-step active">
+                    <div class="step-icon"><i data-lucide="chef-hat"></i></div>
+                    <div class="step-content">
+                        <h4 data-translate="preparing">Preparing</h4>
+                        <p data-translate="chef-cooking">Our chef is preparing your meal</p>
+                    </div>
+                </div>
+                <div class="tracking-step">
+                    <div class="step-icon"><i data-lucide="utensils"></i></div>
+                    <div class="step-content">
+                        <h4 data-translate="ready">Ready to Serve</h4>
+                        <p data-translate="meal-ready">Your meal will be served shortly</p>
+                    </div>
+                </div>
+            </div>
+            <div class="estimated-time">
+                <p data-translate="estimated-time">Estimated time: <span id="estimatedTime">15-20 minutes</span></p>
+            </div>
+        </div>
+    </div>
+
+    <div id="feedbackModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 data-translate="feedback">Share Your Experience</h2>
+                <button class="close-btn" onclick="closeFeedbackModal()">&times;</button>
+            </div>
+            <div class="feedback-form">
+                <div class="rating-section">
+                    <p data-translate="rate-experience">Rate your experience:</p>
+                    <div class="star-rating" id="starRating">
+                        <span class="star" data-rating="1">★</span>
+                        <span class="star" data-rating="2">★</span>
+                        <span class="star" data-rating="3">★</span>
+                        <span class="star" data-rating="4">★</span>
+                        <span class="star" data-rating="5">★</span>
+                    </div>
+                </div>
+                <textarea placeholder="Tell us about your experience..." data-translate-placeholder="feedback-placeholder" id="feedbackText"></textarea>
+                <button class="btn btn-elegant" onclick="submitFeedback()" data-translate="submit-feedback">Submit Feedback</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <div class="mobile-cart-bar" id="mobileCartBar" style="display: none;">
+        <div class="cart-info">
+            <span id="mobileCartItems">0 items</span>
+            <span id="mobileCartTotal">$0.00</span>
+        </div>
+        <button class="btn btn-elegant" onclick="toggleCart()" data-translate="view-cart">View Cart</button>
+    </div>
+
+    <nav class="bottom-nav">
+        <button class="nav-item active" onclick="scrollToSection('hero')">
+            <i data-lucide="home"></i>
+            <span data-translate="home">Home</span>
+        </button>
+        <button class="nav-item" onclick="scrollToSection('menu-section')">
+            <i data-lucide="utensils"></i>
+            <span data-translate="menu">Menu</span>
+        </button>
+        <button class="nav-item" onclick="toggleCart()">
+            <i data-lucide="shopping-cart"></i>
+            <span data-translate="cart">Cart</span>
+        </button>
+        <button class="nav-item" onclick="openFeedbackModal()">
+            <i data-lucide="message-circle"></i>
+            <span data-translate="feedback">Feedback</span>
+        </button>
+    </nav>
+
+    <script src="script.js"></script>
+</body>
+</html>
